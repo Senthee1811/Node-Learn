@@ -1,20 +1,21 @@
-const http = require('http')
-// const EventEmitter = require('events')
+const http = require('http'); 
+var fs = require('fs');
+const fileStream = require('fs'); 
 
-// const customEmitter = new EventEmitter(); 
+const server = http.createServer(function(req,res){
+    // const text = fs.readFileSync('./content/big.txt','utf8')
+    // res.end(text);
+    const text = fs.createReadStream('./content/big.txt','utf8')
+    
 
-// customEmitter.on('response',(name,id) => {
-//     console.log(`Data received user ${name} with ${id}`);
-// })
-// customEmitter.on('response',() => {
-//     console.log(`Some other Logic`);
-// })
-// customEmitter.emit('response',"John",34);
+    const fileStream = fs.createReadStream('./content/big.txt','utf8');
+    fileStream.on('open',()=>{
+        fileStream.pipe(res) 
+    })
 
-const server = http.createServer()
-
-server.on('request',(req,res) => {
-    res.end("Welcome")
+    fileStream.on('error',(err)=>{
+        console.log(err);
+    } )
 })
 
 server.listen(5000);
