@@ -1,21 +1,28 @@
 const http = require('http'); 
-var fs = require('fs');
-const fileStream = require('fs'); 
 
-const server = http.createServer(function(req,res){
-    // const text = fs.readFileSync('./content/big.txt','utf8')
-    // res.end(text);
-    const text = fs.createReadStream('./content/big.txt','utf8')
-    
 
-    const fileStream = fs.createReadStream('./content/big.txt','utf8');
-    fileStream.on('open',()=>{
-        fileStream.pipe(res) 
-    })
+const server = http.createServer((req,res)=> {
+    const url = req.url; 
 
-    fileStream.on('error',(err)=>{
-        console.log(err);
-    } )
+    //Home page
+    if(url == '/'){
+    res.writeHead(200,{'content-type':'text/html'});
+     res.write('<h1>Hello World</h1>')
+     res.end();
+    }
+    //About Page
+    else if(url === '/about'){
+        res.writeHead(200,{'content-type':'text/html'});
+     res.write('<h1>About</h1>')
+     res.end();
+    }
+    else{
+        res.writeHead(404,{'content-type':'text/html'});
+     res.write('<h1>Forbidden</h1>')
+     res.end();
+    }
+
+     
 })
 
-server.listen(5000);
+server.listen(5000)
