@@ -1,29 +1,27 @@
-const http = require('http'); 
-const {readFileSync} = require('fs')
+const express = require('express') 
+const app = express() 
+ 
+app.get('/',(req,res)=>{
+    res.send("HomePage")
+}) 
 
-const homepage = readFileSync('./index.html')
-const server = http.createServer((req,res)=> {
-    const url = req.url; 
-
-    //Home page
-    if(url == '/'){
-    res.writeHead(200,{'content-type':'text/html'});
-     res.write(homepage)
-     res.end();
-    }
-    //About Page
-    else if(url === '/about'){
-        res.writeHead(200,{'content-type':'text/html'});
-     res.write('<h1>About</h1>')
-     res.end();
-    }
-    else{
-        res.writeHead(404,{'content-type':'text/html'});
-     res.write('<h1>Forbidden</h1>')
-     res.end();
-    }
-
-     
+app.get('/about',(req,res) => {
+    res.send("About Page")
 })
 
-server.listen(5000)
+app.all('*',(req,res)=>{
+    res.status(404).send('<h1>Resource Not FOUND!!!</h1>')
+})
+
+
+
+app.listen(5000,()=> {
+    console.log("Server is listening on port number 5000")
+})
+
+//app.get()
+//app.post()
+//app.put()
+//app.delete()
+//app.all()
+//app.use() -> For Middleware
